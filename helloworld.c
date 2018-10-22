@@ -15,11 +15,12 @@ int main(int argc , char *argv)
     if (world_rank == 0)
     {
         scanf("%d",  &n);
-        MPI_Send(&n , 1 , MPI_INT , 1 , 0 , MPI_COMM_WORLD);
+        //MPI_Send(&n , 1 , MPI_INT , 1 , 0 , MPI_COMM_WORLD);
+        MPI_Bcast(&n , 1 , MPI_INT , 0 , MPI_COMM_WORLD);
     }
     else
     {
-        MPI_Recv(&n , 1 , MPI_INT , 0 , 0 , MPI_COMM_WORLD , MPI_STATUS_IGNORE);
+        MPI_Bcast(&n , 1 , MPI_INT , 0 , MPI_COMM_WORLD);
         printf("Process with Rank %d received number %d from Process 0\n" , world_rank , n);
     }
 
