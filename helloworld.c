@@ -11,11 +11,18 @@ int main(int argc , char *argv)
     int world_rank;
     MPI_Comm_rank(MPI_COMM_WORLD , &world_rank);
 
-    char processor_name[MPI_MAX_PROCESSOR_NAME];
-    int name_len;
-    MPI_Get_processor_name(processor_name , &name_len);
-
-    printf("Rank %d out of Size %d\n" , world_rank , world_size);
+    int n;
+    if (world_rank == 0)
+    {
+        scanf("%d",  &n);
+        MPI_Send(&n , 1 , MPI_INT , 1 , 0 , MPI_COMM_WORLD);
+    }
+    else
+    {
+        MPI_Recv(&n , 1 , MPI_INT , 0 , 0 , MPI_COMM_WORLD , MPI_STATUS_IGNORE);
+        printf("Process with Rank %d received number %d from Process 0\n" , world_rank , n);
+    }
 
     MPI_Finalize();
+    return 0;
 }
